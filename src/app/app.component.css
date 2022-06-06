@@ -1,0 +1,30 @@
+.nav {
+  display: flex;
+  align-items: center;
+  /* justify-content: flex-start; */
+  height: 9rem;
+  width: 90%;
+  margin: 0 auto;
+}
+.nav__links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  background-color: var(--White);
+  padding: 0.7rem 0.7rem;
+  border-radius: 2rem;
+}
+
+.nav__item {
+  margin: 0 2rem;
+}
+
+.nav__link:link,
+.nav__link:visited {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--Grey);
+  text-decoration: none;
+  display: block;
+  transition: all 0.3s;
+}

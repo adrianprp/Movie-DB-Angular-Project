@@ -1,0 +1,81 @@
+<section id="trending">
+  <h2>Trending Now</h2>
+  <div class="container">
+    <button
+      class="handle left-handle"
+      (click)="sliderScrollLeft(sliderTrending)"
+    ></button>
+    <div class="movies" #sliderTrending>
+      <div class="movie" *ngFor="let movie of trendingMoviesList">
+        <div class="movie__thumbnail">
+          <img src="{{ movie.image }}" alt="" class="movie__thumbnail-poster" />
+        </div>
+        <div class="movie__description">
+          <p class="movie__description-title">{{ movie.title }}</p>
+          <div class="movie__description-genres">
+            <p
+              class="movie__description-genre"
+              *ngFor="let genre of movie.genres"
+            >
+              {{ this.genreList.get(genre) }}
+            </p>
+          </div>
+          <p class="movie__description-release">{{ movie.release | date }}</p>
+        </div>
+        <button
+          class="btnFavorite"
+          (click)="addFavorite(movie)"
+          [class.btnIsFavorite]="movie.isFavorite"
+        >
+          <i class="fa-solid fa-heart"></i>
+        </button>
+      </div>
+    </div>
+
+    <button
+      class="handle right-handle"
+      (click)="sliderScrollRight(sliderTrending)"
+    ></button>
+  </div>
+</section>
+
+<section id="trending">
+  <h2>Popular Now</h2>
+  <div class="container">
+    <button
+      class="handle left-handle"
+      (click)="sliderScrollLeft(sliderPopular)"
+    ></button>
+    <div class="movies" #sliderPopular>
+      <div class="movie" *ngFor="let movie of popularMoviesList">
+        <div class="movie__thumbnail">
+          <img src="{{ movie.image }}" alt="" class="movie__thumbnail-poster" />
+        </div>
+        <div class="movie__description">
+          <p class="movie__description-title">{{ movie.title }}</p>
+          <div class="movie__description-genres">
+            <p
+              class="movie__description-genre"
+              *ngFor="let genre of movie.genres"
+            >
+              {{ this.genreList.get(genre) }}
+            </p>
+          </div>
+          <p class="movie__description-release">{{ movie.release | date }}</p>
+        </div>
+        <button
+          class="btnFavorite"
+          (click)="addFavorite(movie)"
+          [class.btnIsFavorite]="movie.isFavorite"
+        >
+          <i class="fa-solid fa-heart"></i>
+        </button>
+      </div>
+    </div>
+
+    <button
+      class="handle right-handle"
+      (click)="sliderScrollRight(sliderPopular)"
+    ></button>
+  </div>
+</section>

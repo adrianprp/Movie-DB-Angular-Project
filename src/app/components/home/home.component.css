@@ -1,0 +1,136 @@
+/* MOVIES */
+h2 {
+  font-size: 2rem;
+  margin-left: 5rem;
+  color: var(--White);
+}
+.container {
+  width: 100%;
+  padding-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.movies {
+  display: flex;
+  width: 90%;
+  margin: 0 auto;
+  padding: 2rem 0;
+  align-items: center;
+  overflow: hidden;
+}
+.movie {
+  position: relative;
+  border-radius: 5px;
+  background-color: var(--Black);
+  cursor: pointer;
+  flex-grow: 1;
+  margin: 0 6.5px;
+}
+.movie:hover {
+  transform: translateY(-10px);
+}
+.movie:hover .btnFavorite {
+  visibility: visible;
+  transition: 0.5s;
+  cursor: pointer;
+}
+.movie__thumbnail {
+  background-color: var(--Black);
+  position: relative;
+  height: 200px;
+  color: var(--White);
+  text-align: center;
+}
+.movie__thumbnail-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  height: 200px;
+  width: 100%;
+}
+.movie__description {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 157px;
+}
+.movie__description-title {
+  text-align: justify;
+  color: var(--White);
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 280px;
+}
+.movie__description-genres {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.movie__description-genre {
+  margin-right: 5px;
+  color: var(--White);
+}
+.btnFavorite {
+  visibility: hidden;
+  z-index: 10;
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: var(--Black);
+  border: none;
+  outline: none;
+  font-size: 1.5rem;
+  color: var(--White);
+}
+.btnFavorite:hover {
+  color: var(--Teal);
+}
+
+.btnIsFavorite {
+  color: var(--Teal);
+  font-size: 2rem;
+}
+
+.handle {
+  flex-grow: 0;
+  width: 4.8%;
+  z-index: 10;
+  border: none;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  color: var(--White);
+  transition: font-size 150ms ease-in-out;
+  background-color: rgba(0, 0, 0, 0);
+}
+.left-handle {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.right-handle {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.handle:hover {
+  background-color: rgba(0, 0, 0, 0);
+  cursor: pointer;
+  font-size: 9rem;
+}
+.container:hover .left-handle::after {
+  content: "\2039";
+}
+
+.container:hover .right-handle::after {
+  content: "\203A";
+}

@@ -1,0 +1,17 @@
+<div class="search__container">
+  <form class="search__form" (keyup)="onKeySearch($event)">
+    <input
+      class="search__form-input"
+      name="search"
+      placeholder="Search for a movie..."
+      [(ngModel)]="searchValue"
+    />
+    <button
+      class="search__form-button"
+      (click)="clearInput()"
+      [class.visible]="searchValue"
+    >
+      ✖
+    </button>
+  </form>
+</div>
