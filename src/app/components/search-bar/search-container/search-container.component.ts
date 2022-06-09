@@ -23,7 +23,6 @@ export class SearchContainerComponent implements OnInit {
   constructor(private service: MovieDBService, private route: ActivatedRoute) {
     this.searchValue = '';
     this.selectedValue = 'movie';
-    console.log(this.notFound);
   }
 
   ngOnInit(): void {
@@ -69,7 +68,9 @@ export class SearchContainerComponent implements OnInit {
             title: response.title,
             release: response.release_date,
             image: `http://image.tmdb.org/t/p/original/${response.backdrop_path}`,
-            poster: `http://image.tmdb.org/t/p/original/${response.poster_path}`,
+            poster: `http://image.tmdb.org/t/p/original/${response.poster_path}`
+              ? `http://image.tmdb.org/t/p/original/${response.poster_path}`
+              : `../../../assets/poster-holding.jpg`,
             genres: response.genre_ids,
             isFavorite:
               isFavoriteMovie !== undefined
@@ -77,16 +78,14 @@ export class SearchContainerComponent implements OnInit {
                 : false,
           });
         });
+        if (this.searchedMovies.length === 0) {
+          this.notFound = true;
+        }
       });
-    if (this.searchedMovies.length == null) {
-      this.notFound = true;
-      console.log(this.notFound);
-    }
   }
 
   loadMore() {
     this.page = this.page + 1;
-
     this.loadSearchContainer();
   }
 }

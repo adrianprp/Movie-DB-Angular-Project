@@ -32,6 +32,12 @@
         <i class="fa-solid fa-heart"></i>
       </button>
     </div>
-    <button class="show-more" (click)="loadMore()">Show more...</button>
+    <button
+      class="show-more"
+      (click)="loadMore()"
+      [style.visibility]="notFound ? 'hidden' : 'visible'"
+    >
+      Show more...
+    </button>
   </div>
 </div>

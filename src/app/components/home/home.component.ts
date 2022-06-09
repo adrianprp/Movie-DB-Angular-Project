@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieDBService } from 'src/app/api-service/movie-db.service';
+import { LoadingHandler } from 'src/app/loading-handlers';
 import { Movie } from 'src/app/models';
 
 @Component({
@@ -16,15 +17,20 @@ export class HomeComponent implements OnInit {
   allMovies: Movie[] = [];
 
   //Slider Scroll
-  scrollPerClick: number = 1000;
+  scrollPerClick: number = 1660;
   scrollAmount: number = 0;
+
+  //
+  loadingHandler = new LoadingHandler();
 
   constructor(private service: MovieDBService) {}
 
   ngOnInit(): void {
     //Initialize Movie Containers
+
     this.initializeTrendingContainer();
     this.initializePopularContainer();
+
     this.initializeGenreList();
 
     //Send genres to Favorites Component
@@ -32,9 +38,11 @@ export class HomeComponent implements OnInit {
   }
 
   initializeTrendingContainer() {
+    this.loadingHandler.start();
     this.service
       .getTrendingList(this.modelType)
       .subscribe((trendingMoviesEl) => {
+        this.loadingHandler.finish();
         trendingMoviesEl.results.forEach((movie: any) => {
           this.trendingMoviesList.push({
             id: movie.id,
@@ -91,12 +99,10 @@ export class HomeComponent implements OnInit {
   }
 
   sliderScrollRight(target: HTMLElement) {
-    console.log(window.innerWidth, target.clientWidth);
     if (this.scrollAmount <= target.scrollWidth - target.clientWidth) {
       target.scrollTo({
         top: 0,
         left: (this.scrollAmount += this.scrollPerClick),
-
         behavior: 'smooth',
       });
     }
