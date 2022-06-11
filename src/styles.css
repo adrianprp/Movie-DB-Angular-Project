@@ -19,6 +19,7 @@ body {
   );
   background-repeat: no-repeat;
   min-height: 120vh;
+  margin: 2rem;
 }
 
 body * {

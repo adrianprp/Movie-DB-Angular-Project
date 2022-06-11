@@ -15,24 +15,29 @@ export class SearchContainerComponent implements OnInit {
   searchedMovies: Movie[] = [];
 
   searchValue: string;
-  selectedValue: any;
+  selectedValue: string = 'movie';
   notFound: boolean = false;
 
   page: number = 1;
 
   constructor(private service: MovieDBService, private route: ActivatedRoute) {
     this.searchValue = '';
-    this.selectedValue = 'movie';
+
+    this.route.params.subscribe((params) => {
+      this.searchValue = params['searchValue'];
+
+      if (params['isTvShow'] === 'true') {
+        this.selectedValue = 'tv';
+      } else if (params['isTvShow'] === 'false') {
+        this.selectedValue = 'movie';
+      }
+      this.filterList();
+    });
   }
 
   ngOnInit(): void {
     this.service.genres.subscribe((genres) => (this.genreList = genres));
     this.initializeFavoriteMovies();
-
-    this.route.params.subscribe((params) => {
-      this.searchValue = params['searchValue'];
-      this.filterList();
-    });
   }
 
   addFavorite(movie: Movie) {
@@ -47,14 +52,11 @@ export class SearchContainerComponent implements OnInit {
     this.page = 1;
     this.searchedMovies = [];
 
-    if (this.searchValue.length > 2) {
-      this.loadSearchContainer();
-    }
+    this.loadSearchContainer();
   }
 
   loadSearchContainer() {
     this.notFound = false;
-    console.log(this.notFound);
     this.service
       .getSearchList(this.selectedValue, this.searchValue, this.page)
       .subscribe((searchResponse) => {

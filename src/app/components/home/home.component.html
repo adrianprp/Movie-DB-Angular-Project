@@ -6,13 +6,6 @@
       (click)="sliderScrollLeft(sliderTrending)"
     ></button>
     <div class="movies" #sliderTrending>
-      <img
-        *ngIf="loadingHandler.isLoading"
-        src="../../../assets/loading.gif"
-        alt="loading-icon"
-        class="loading-icon"
-      />
-
       <div class="movie" *ngFor="let movie of trendingMoviesList">
         <div class="movie__thumbnail">
           <img src="{{ movie.image }}" alt="" class="movie__thumbnail-poster" />

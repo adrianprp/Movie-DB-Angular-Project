@@ -1,14 +1,28 @@
 <div class="search__container">
-  <form class="search__form" (keyup)="onKeySearch($event)">
+  <form
+    class="search__form"
+    #searchForm="ngForm"
+    (keyup)="onKeySearch($event, searchForm)"
+  >
     <input
       class="search__form-input"
       name="search"
       placeholder="Search for a movie or tv show..."
       [(ngModel)]="searchValue"
     />
+    <input
+      class="search__type--toggle"
+      id="checkbox"
+      type="checkbox"
+      name="isTvShow"
+      [(ngModel)]="isTvShow"
+      (change)="onChange(searchForm)"
+    />
+
+    <label for="checkbox"></label>
     <button
       class="search__form-button"
-      (click)="clearInput()"
+      (click)="clearInput($event)"
       [class.visible]="searchValue"
     >
       ✖

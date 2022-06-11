@@ -1,7 +1,6 @@
 .nav {
   display: flex;
   align-items: center;
-  /* justify-content: flex-start; */
   height: 9rem;
   width: 90%;
   margin: 0 auto;
@@ -13,6 +12,7 @@
   background-color: var(--White);
   padding: 0.7rem 0.7rem;
   border-radius: 2rem;
+  color: var(--Grey);
 }
 
 .nav__item {

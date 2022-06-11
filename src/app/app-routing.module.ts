@@ -15,7 +15,7 @@ const routes: Routes = [
     component: FavoritesComponent,
   },
   {
-    path: 'search/:searchValue',
+    path: 'search/:searchValue/:isTvShow',
     component: SearchContainerComponent,
   },
 ];

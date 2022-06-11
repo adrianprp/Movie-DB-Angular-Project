@@ -1,4 +1,5 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,30 +8,37 @@ import { Router } from '@angular/router';
   styleUrls: ['./search-bar.component.css'],
 })
 export class SearchBarComponent implements OnInit {
-  searchValue: string;
   timeout: any = null;
+
+  searchValue: string;
+  isTvShow: boolean;
 
   constructor(private router: Router) {
     this.searchValue = '';
+    this.isTvShow = false;
   }
 
   ngOnInit(): void {}
 
-  clearInput() {
+  clearInput(e: any) {
     this.searchValue = '';
   }
 
-  search(searchValue: string) {
-    this.router.navigate(['/search', searchValue]);
+  search(searchValue: string, isTvShow: boolean) {
+    this.router.navigate(['/search', searchValue, isTvShow]);
   }
 
-  onKeySearch(event: any) {
+  onKeySearch(event: any, searchForm: NgForm) {
     clearTimeout(this.timeout);
     const $this = this;
     this.timeout = setTimeout(function () {
-      if (event.keyCode != 13) {
-        $this.search(event.target.value);
+      if (event.keyCode != 13 && event.target.value.length > 2) {
+        $this.search(searchForm.value.search, searchForm.value.isTvShow);
       }
     }, 1000);
+  }
+
+  onChange(searchForm: NgForm) {
+    this.search(searchForm.value.search, searchForm.value.isTvShow);
   }
 }
