@@ -39,6 +39,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   onChange(searchForm: NgForm) {
-    this.search(searchForm.value.search, searchForm.value.isTvShow);
+    if (searchForm.value.search.length > 2)
+      this.search(searchForm.value.search, searchForm.value.isTvShow);
   }
 }

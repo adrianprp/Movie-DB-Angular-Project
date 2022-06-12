@@ -48,6 +48,7 @@
   height: 157px;
 }
 .movie__description-title {
+  text-align: justify;
   color: var(--White);
   font-weight: 700;
   font-size: 1.3rem;
@@ -55,6 +56,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  width: 280px;
 }
 .movie__description-genres {
   display: flex;
