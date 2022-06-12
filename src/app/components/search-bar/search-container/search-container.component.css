@@ -101,8 +101,8 @@
   cursor: pointer;
   color: var(--White);
   text-align: center;
-  text-transform: uppercase;
   letter-spacing: 1px;
+  opacity: 0.9;
 }
 
 .show-more:focus {

@@ -16,6 +16,7 @@ export class SearchContainerComponent implements OnInit {
 
   searchValue: string;
   selectedValue: string = 'movie';
+
   notFound: boolean = false;
 
   page: number = 1;
@@ -31,6 +32,7 @@ export class SearchContainerComponent implements OnInit {
       } else if (params['isTvShow'] === 'false') {
         this.selectedValue = 'movie';
       }
+
       this.filterList();
     });
   }
@@ -61,14 +63,19 @@ export class SearchContainerComponent implements OnInit {
       .getSearchList(this.selectedValue, this.searchValue, this.page)
       .subscribe((searchResponse) => {
         searchResponse.results.forEach((response: any) => {
+          console.log(response);
           let isFavoriteMovie = this.favMovies.find(
             (movie) => movie.id === response.id
           );
 
           this.searchedMovies.push({
             id: response.id,
-            title: response.title,
-            release: response.release_date,
+            title:
+              this.selectedValue === 'movie' ? response.title : response.name,
+            release:
+              this.selectedValue === 'movie'
+                ? response.release_date
+                : response.first_air_date,
             image: `http://image.tmdb.org/t/p/original/${response.backdrop_path}`,
             poster: `http://image.tmdb.org/t/p/original/${response.poster_path}`
               ? `http://image.tmdb.org/t/p/original/${response.poster_path}`
