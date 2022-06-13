@@ -87,32 +87,7 @@
   color: var(--Teal);
   font-size: 2rem;
 }
-.show-more {
-  background-color: var(--Teal);
-  border-radius: 5px;
-  border: 1px solid var(--Teal);
-  box-shadow: 0 2px var(--Teal);
-  border: none;
-  font-size: 1rem;
-  padding: 0.6rem;
-  border-radius: 5px;
-  position: fixed;
-  bottom: 10px;
-  cursor: pointer;
-  color: var(--White);
-  text-align: center;
-  letter-spacing: 1px;
-  opacity: 0.9;
-}
 
-.show-more:focus {
-  outline: none;
-}
-
-.show-more:active {
-  box-shadow: 0 0 var(--White);
-  transform: translateY(3px);
-}
 .error {
   text-align: center;
   font-size: 1.5rem;

@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovieDBService } from 'src/app/api-service/movie-db.service';
 import { Movie } from 'src/app/models';
@@ -8,7 +15,10 @@ import { Movie } from 'src/app/models';
   templateUrl: './search-container.component.html',
   styleUrls: ['./search-container.component.css'],
 })
-export class SearchContainerComponent implements OnInit {
+export class SearchContainerComponent implements OnInit, AfterViewInit {
+  @ViewChildren('lastSearchedMovieOfList')
+  lastSearchedMovieOfList: QueryList<ElementRef> | undefined;
+
   genreList: any = new Map();
   favMovies: Movie[] = [];
 
@@ -20,6 +30,9 @@ export class SearchContainerComponent implements OnInit {
   notFound: boolean = false;
 
   page: number = 1;
+  totalPages: number = 0;
+
+  observer: any;
 
   constructor(private service: MovieDBService, private route: ActivatedRoute) {
     this.searchValue = '';
@@ -40,6 +53,13 @@ export class SearchContainerComponent implements OnInit {
   ngOnInit(): void {
     this.service.genres.subscribe((genres) => (this.genreList = genres));
     this.initializeFavoriteMovies();
+
+    this.intersectionObserver();
+  }
+  ngAfterViewInit() {
+    this.lastSearchedMovieOfList?.changes.subscribe((elementsList) => {
+      this.observer.observe(elementsList.last.nativeElement);
+    });
   }
 
   addFavorite(movie: Movie) {
@@ -62,8 +82,9 @@ export class SearchContainerComponent implements OnInit {
     this.service
       .getSearchList(this.selectedValue, this.searchValue, this.page)
       .subscribe((searchResponse) => {
+        this.totalPages = searchResponse.total_pages;
+
         searchResponse.results.forEach((response: any) => {
-          console.log(response);
           let isFavoriteMovie = this.favMovies.find(
             (movie) => movie.id === response.id
           );
@@ -93,8 +114,23 @@ export class SearchContainerComponent implements OnInit {
       });
   }
 
-  loadMore() {
-    this.page = this.page + 1;
-    this.loadSearchContainer();
+  intersectionObserver() {
+    const options = {
+      root: null,
+      threshold: 0.5,
+    };
+
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('show', entry.isIntersecting);
+      });
+
+      if (entries[0].isIntersecting) {
+        if (this.page < this.totalPages) {
+          this.page++;
+          this.loadSearchContainer();
+        }
+      }
+    }, options);
   }
 }
