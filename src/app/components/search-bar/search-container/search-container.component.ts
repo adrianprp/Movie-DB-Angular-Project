@@ -121,15 +121,12 @@ export class SearchContainerComponent implements OnInit, AfterViewInit {
     };
 
     this.observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle('show', entry.isIntersecting);
-      });
+      const [entry] = entries;
 
-      if (entries[0].isIntersecting) {
-        if (this.page < this.totalPages) {
-          this.page++;
-          this.loadSearchContainer();
-        }
+      if (!entry.isIntersecting) return;
+      if (this.page < this.totalPages) {
+        this.page++;
+        this.loadSearchContainer();
       }
     }, options);
   }
