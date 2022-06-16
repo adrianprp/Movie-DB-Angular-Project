@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { MovieDBService } from 'src/app/api-service/movie-db.service';
 import { Movie } from 'src/app/models';
 
@@ -7,7 +15,20 @@ import { Movie } from 'src/app/models';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+  //List of slides//
+  @ViewChildren('slidesTrending')
+  slidesTrending: any | undefined;
+  @ViewChildren('slidesPopular')
+  slidesPopular: any | undefined;
+  ////////////////
+  @ViewChild('sliderTrending')
+  sliderTrending: any;
+  @ViewChild('slider')
+  slider: any;
+  @ViewChild('sliderPopular')
+  sliderPopular: any;
+
   //Movies
   modelType: string = 'movie';
   trendingMoviesList: Movie[] = [];
@@ -15,23 +36,34 @@ export class HomeComponent implements OnInit {
   genreList: any = new Map();
   allMovies: Movie[] = [];
 
-  //Slider Scroll
-  scrollPerClick: number = 1670;
-  scrollAmount: number = 0;
+  //Slider
 
-  //
+  curSlideTrending = { current: 0 };
+  curSlidePopular = { current: 0 };
+  numberOfSlides = 5;
+  observer: any;
 
   constructor(private service: MovieDBService) {}
 
   ngOnInit(): void {
     //Initialize Movie Containers
-
     this.initializeTrendingContainer();
     this.initializePopularContainer();
     this.initializeGenreList();
 
     //Send genres to Favorites Component
     this.service.genres.next(this.genreList);
+
+    this.resizeObserver();
+  }
+  ngAfterViewInit() {
+    this.positionSlides(this.slidesTrending);
+    this.positionSlides(this.slidesPopular);
+
+    this.observer.observe(this.slider.nativeElement);
+  }
+  ngOnDestroy() {
+    this.observer.unobserve(this.slider.nativeElement);
   }
 
   initializeTrendingContainer() {
@@ -83,23 +115,69 @@ export class HomeComponent implements OnInit {
     this.service.addToFavList(movie);
   }
 
-  sliderScrollLeft(target: HTMLElement) {
-    target.scrollTo({
-      top: 0,
-      left: (this.scrollAmount -= this.scrollPerClick),
-      behavior: 'smooth',
-    });
-
-    if (this.scrollAmount < 0) this.scrollAmount = 0;
+  sliderScrollLeft(slides: any, currentSlide: any) {
+    const maxSlides = slides.length;
+    if (currentSlide.current === 0) {
+      currentSlide.current = maxSlides - this.numberOfSlides;
+    } else {
+      currentSlide.current = currentSlide.current - this.numberOfSlides;
+    }
+    this.goToSlide(slides, currentSlide.current);
   }
 
-  sliderScrollRight(target: HTMLElement) {
-    if (this.scrollAmount <= target.scrollWidth - target.clientWidth) {
-      target.scrollTo({
-        top: 0,
-        left: (this.scrollAmount += this.scrollPerClick),
-        behavior: 'smooth',
+  sliderScrollRight(slides: any, currentSlide: any) {
+    const maxSlides = slides.length;
+    if (currentSlide.current === maxSlides - this.numberOfSlides) {
+      currentSlide.current = 0;
+    } else {
+      currentSlide.current = currentSlide.current + this.numberOfSlides;
+    }
+
+    this.goToSlide(slides, currentSlide.current);
+  }
+
+  goToSlide(slides: any, currentSlide: number) {
+    slides.toArray().forEach((slide: ElementRef, i: number) => {
+      slide.nativeElement.style.transform = `translateX(${
+        100 * (i - currentSlide)
+      }%)`;
+    });
+  }
+
+  positionSlides(slides: any) {
+    slides?.changes.subscribe((elementsList: any) => {
+      elementsList._results.forEach((slide: ElementRef, i: number) => {
+        slide.nativeElement.style.transform = `translateX(${100 * i}%)`;
       });
+    });
+  }
+
+  resizeObserver() {
+    this.observer = new ResizeObserver((entries) => {
+      const [entry] = entries;
+      const width = entry.contentRect.width;
+
+      this.setSliderWidth(width, this.sliderTrending);
+      this.setSliderWidth(width, this.sliderPopular);
+    });
+  }
+
+  setSliderWidth(width: number, slider: ElementRef) {
+    if (width < 640) {
+      slider.nativeElement.style.width = '20rem';
+      this.numberOfSlides = 1;
+    } else if (640 < width && width < 960) {
+      slider.nativeElement.style.width = '40rem';
+      this.numberOfSlides = 2;
+    } else if (960 < width && width < 1280) {
+      slider.nativeElement.style.width = '60rem';
+      this.numberOfSlides = 3;
+    } else if (1280 < width && width < 1600) {
+      slider.nativeElement.style.width = '80rem';
+      this.numberOfSlides = 4;
+    } else if (1600 < width && width < 1920) {
+      slider.nativeElement.style.width = '100rem';
+      this.numberOfSlides = 5;
     }
   }
 }

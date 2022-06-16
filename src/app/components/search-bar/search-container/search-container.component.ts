@@ -39,13 +39,11 @@ export class SearchContainerComponent implements OnInit, AfterViewInit {
 
     this.route.params.subscribe((params) => {
       this.searchValue = params['searchValue'];
-
       if (params['isTvShow'] === 'true') {
         this.selectedValue = 'tv';
       } else if (params['isTvShow'] === 'false') {
         this.selectedValue = 'movie';
       }
-
       this.filterList();
     });
   }

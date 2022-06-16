@@ -1,4 +1,5 @@
 /* MOVIES */
+
 h2 {
   font-size: 2rem;
   margin-left: 5rem;
@@ -10,27 +11,34 @@ h2 {
   display: flex;
   justify-content: center;
 }
+.slider {
+  width: 100rem;
+  height: 25rem;
+  margin: 0 auto;
+  position: relative;
+  /* IN THE END */
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* THIS creates the animation! */
+  transition: transform 1s;
+}
 
 .movies {
   display: flex;
-  width: 90%;
-  margin: 0 auto;
-  padding: 2rem 0;
   align-items: center;
-  overflow: hidden;
-  gap: 14px;
 }
 .movie {
-  position: relative;
   border-radius: 5px;
   background-color: var(--Black);
   cursor: pointer;
-  flex-grow: 1;
-  /* margin: 0 6.5px; */
+  width: 20rem;
+  border: 2px solid var(--Grey);
 }
-.movie:hover {
-  transform: translateY(-10px);
-}
+
 .movie:hover .btnFavorite {
   visibility: visible;
   transition: 0.5s;
@@ -38,14 +46,13 @@ h2 {
 }
 .movie__thumbnail {
   background-color: var(--Black);
-  position: relative;
   height: 200px;
   color: var(--White);
   text-align: center;
   border-radius: 5px;
 }
 .movie__thumbnail-poster {
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   right: 0;
@@ -61,6 +68,7 @@ h2 {
   justify-content: space-between;
   align-items: flex-start;
   height: 157px;
+  position: relative;
 }
 .movie__description-title {
   text-align: justify;

@@ -1,12 +1,16 @@
 <section id="trending">
   <h2>Trending Now</h2>
-  <div class="container">
+  <div class="container" #slider>
     <button
       class="handle left-handle"
-      (click)="sliderScrollLeft(sliderTrending)"
+      (click)="sliderScrollLeft(this.slidesTrending, curSlideTrending)"
     ></button>
-    <div class="movies" #sliderTrending>
-      <div class="movie" *ngFor="let movie of trendingMoviesList">
+    <div class="movies slider" #sliderTrending>
+      <div
+        class="movie slide"
+        *ngFor="let movie of trendingMoviesList"
+        #slidesTrending
+      >
         <div class="movie__thumbnail">
           <img src="{{ movie.image }}" alt="" class="movie__thumbnail-poster" />
         </div>
@@ -21,33 +25,37 @@
             </p>
           </div>
           <p class="movie__description-release">{{ movie.release | date }}</p>
+          <button
+            class="btnFavorite"
+            (click)="addFavorite(movie)"
+            [class.btnIsFavorite]="movie.isFavorite"
+          >
+            <i class="fa-solid fa-heart"></i>
+          </button>
         </div>
-        <button
-          class="btnFavorite"
-          (click)="addFavorite(movie)"
-          [class.btnIsFavorite]="movie.isFavorite"
-        >
-          <i class="fa-solid fa-heart"></i>
-        </button>
       </div>
     </div>
 
     <button
       class="handle right-handle"
-      (click)="sliderScrollRight(sliderTrending)"
+      (click)="sliderScrollRight(this.slidesTrending, curSlideTrending)"
     ></button>
   </div>
 </section>
 
-<section id="trending">
+<section id="popular">
   <h2>Popular Now</h2>
   <div class="container">
     <button
       class="handle left-handle"
-      (click)="sliderScrollLeft(sliderPopular)"
+      (click)="sliderScrollLeft(this.slidesPopular, curSlidePopular)"
     ></button>
-    <div class="movies" #sliderPopular>
-      <div class="movie" *ngFor="let movie of popularMoviesList">
+    <div class="movies slider" #sliderPopular>
+      <div
+        class="movie slide"
+        *ngFor="let movie of popularMoviesList"
+        #slidesPopular
+      >
         <div class="movie__thumbnail">
           <img src="{{ movie.image }}" alt="" class="movie__thumbnail-poster" />
         </div>
@@ -75,7 +83,7 @@
 
     <button
       class="handle right-handle"
-      (click)="sliderScrollRight(sliderPopular)"
+      (click)="sliderScrollRight(this.slidesPopular, curSlidePopular)"
     ></button>
   </div>
 </section>
