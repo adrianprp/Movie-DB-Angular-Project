@@ -1,6 +1,6 @@
 <section id="trending">
   <h2>Trending Now</h2>
-  <div class="container" #slider>
+  <div class="container" #slider1>
     <button
       class="handle left-handle"
       (click)="sliderScrollLeft(this.slidesTrending, curSlideTrending)"
@@ -45,7 +45,7 @@
 
 <section id="popular">
   <h2>Popular Now</h2>
-  <div class="container">
+  <div class="container" #slider2>
     <button
       class="handle left-handle"
       (click)="sliderScrollLeft(this.slidesPopular, curSlidePopular)"

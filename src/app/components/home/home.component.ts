@@ -21,13 +21,16 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   slidesTrending: any | undefined;
   @ViewChildren('slidesPopular')
   slidesPopular: any | undefined;
-  ////////////////
+  //Slider//
   @ViewChild('sliderTrending')
   sliderTrending: any;
-  @ViewChild('slider')
-  slider: any;
   @ViewChild('sliderPopular')
   sliderPopular: any;
+  //Slider Container//
+  @ViewChild('slider1')
+  slider1: any;
+  @ViewChild('slider2')
+  slider2: any;
 
   //Movies
   modelType: string = 'movie';
@@ -60,10 +63,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.positionSlides(this.slidesTrending);
     this.positionSlides(this.slidesPopular);
 
-    this.observer.observe(this.slider.nativeElement);
+    this.observer.observe(this.slider1.nativeElement);
+    this.observer.observe(this.slider2.nativeElement);
   }
   ngOnDestroy() {
-    this.observer.unobserve(this.slider.nativeElement);
+    this.observer.unobserve(this.slider1.nativeElement);
+    this.observer.unobserve(this.slider2.nativeElement);
   }
 
   initializeTrendingContainer() {
@@ -126,18 +131,21 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   sliderScrollRight(slides: any, currentSlide: any) {
+    console.log(currentSlide.current);
     const maxSlides = slides.length;
     if (currentSlide.current === maxSlides - this.numberOfSlides) {
       currentSlide.current = 0;
+    } else if (currentSlide.current > maxSlides - this.numberOfSlides) {
+      currentSlide.current = maxSlides - this.numberOfSlides;
     } else {
       currentSlide.current = currentSlide.current + this.numberOfSlides;
     }
-
     this.goToSlide(slides, currentSlide.current);
   }
 
   goToSlide(slides: any, currentSlide: number) {
-    slides.toArray().forEach((slide: ElementRef, i: number) => {
+    const arr = [...slides];
+    arr.forEach((slide: ElementRef, i: number) => {
       slide.nativeElement.style.transform = `translateX(${
         100 * (i - currentSlide)
       }%)`;
@@ -157,12 +165,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       const [entry] = entries;
       const width = entry.contentRect.width;
 
-      this.setSliderWidth(width, this.sliderTrending);
-      this.setSliderWidth(width, this.sliderPopular);
+      this.setSliderWidth(width, this.sliderTrending, this.curSlideTrending);
+      this.setSliderWidth(width, this.sliderPopular, this.curSlidePopular);
     });
   }
 
-  setSliderWidth(width: number, slider: ElementRef) {
+  setSliderWidth(width: number, slider: ElementRef, currentSlide: any) {
     if (width < 640) {
       slider.nativeElement.style.width = '20rem';
       this.numberOfSlides = 1;
@@ -178,6 +186,15 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (1600 < width && width < 1920) {
       slider.nativeElement.style.width = '100rem';
       this.numberOfSlides = 5;
+    }
+
+    const maxNumberOfSlides = slider.nativeElement.children.length;
+    if (currentSlide.current > maxNumberOfSlides - this.numberOfSlides) {
+      [...slider.nativeElement.children].forEach((slide: any, i: number) => {
+        slide.style.transform = `translateX(${
+          100 * (i - (maxNumberOfSlides - this.numberOfSlides))
+        }%)`;
+      });
     }
   }
 }
